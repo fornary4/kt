@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(timeChangeReceiver)
-        Log.d("forntag", "Destroy")
     }
 
     inner class TimeChangeReceiver : BroadcastReceiver() {
