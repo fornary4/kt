@@ -4,6 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <fragment
+        android:id="@+id/fragment_test"
+        android:name="com.fornary4.kt.fragment.TestFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
 
 </LinearLayout>
