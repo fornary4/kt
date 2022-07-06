@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fornary4.kt">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,9 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KT"
         tools:targetApi="31">
-        <activity
-            android:name=".NewsContentActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ThirdActivity"
             android:exported="true">
