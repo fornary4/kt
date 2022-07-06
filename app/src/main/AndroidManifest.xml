@@ -20,13 +20,7 @@
         <activity
             android:name=".ThirdActivity"
             android:exported="true">
-            <intent-filter tools:ignore="AppLinkUrlError">
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="https" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SecondActivity"
@@ -39,7 +33,20 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <provider
+            android:authorities="com.fornary4.kt.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+
+        </provider>
+
     </application>
 
 </manifest>

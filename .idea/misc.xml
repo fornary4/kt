@@ -7,7 +7,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_news_content.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/activity_second.xml" value="0.29739583333333336" />
-        <entry key="app/src/main/res/layout/activity_third.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_third.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fruit_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/msg_left_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/msg_right_item.xml" value="0.29739583333333336" />
@@ -17,6 +17,7 @@
         <entry key="app/src/main/res/layout/test_fragment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/titlebar.xml" value="0.25" />
         <entry key="app/src/main/res/menu/main.xml" value="0.29739583333333336" />
+        <entry key="app/src/main/res/xml/file_paths.xml" value="0.29635416666666664" />
       </map>
     </option>
   </component>
