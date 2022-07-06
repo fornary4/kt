@@ -1,12 +1,16 @@
 package com.fornary4.kt
 
 import android.Manifest
+import android.annotation.SuppressLint
 
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ListView
 import android.widget.Toast
 
 import androidx.appcompat.app.AppCompatActivity
@@ -16,19 +20,40 @@ import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
+    private val contactsList = ArrayList<String>()
+    private lateinit var adapter: ArrayAdapter<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<Button>(R.id.btn_call).setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) !=
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
-            } else {
-                call()
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, contactsList)
+        findViewById<ListView>(R.id.lv).adapter = adapter
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.READ_CONTACTS), 1)
+        } else {
+            readContacts()
+        }
+
+
+
+    }
+
+    @SuppressLint("Range")
+    private fun readContacts() {
+        contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+        null, null, null, null)?.apply {
+            while (moveToNext()) {
+                val displayName = getString(getColumnIndex(
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                val number = getString(getColumnIndex(
+                    ContactsContract.CommonDataKinds.Phone.NUMBER))
+                contactsList.add("$displayName\n$number")
             }
+            adapter.notifyDataSetChanged()
+            close()
         }
     }
 
@@ -41,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         when(requestCode) {
             1 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    call()
+                    readContacts()
                 } else {
                     Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show()
                 }

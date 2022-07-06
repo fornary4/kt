@@ -4,11 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_call"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="submit" />
+   <ListView
+       android:id="@+id/lv"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"/>
 
 
 
