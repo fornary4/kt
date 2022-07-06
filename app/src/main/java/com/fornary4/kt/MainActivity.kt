@@ -6,32 +6,39 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import java.io.*
+import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var timeChangeReceiver: TimeChangeReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val intentFilter = IntentFilter()
-        intentFilter.addAction("android.intent.action.TIME_TICK")
-        timeChangeReceiver = TimeChangeReceiver()
-        registerReceiver(timeChangeReceiver, intentFilter)
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(timeChangeReceiver)
-    }
-
-    inner class TimeChangeReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            Toast.makeText(context, "Time has changed", Toast.LENGTH_SHORT).show()
+        findViewById<Button>(R.id.btn_submit).setOnClickListener {
+            val editor = getSharedPreferences("data", Context.MODE_PRIVATE).edit()
+            editor.putString("name", "Tom")
+            editor.putInt("age", 20)
+            editor.putBoolean("married", false)
+            editor.apply()
         }
 
+        findViewById<Button>(R.id.btn_read).setOnClickListener {
+            val pref = getSharedPreferences("data", Context.MODE_PRIVATE)
+            val name = pref.getString("name", "")
+            val age = pref.getInt("age", 0)
+            val married = pref.getBoolean("married", false)
+
+            Log.d("forntag", "name is $name")
+            Log.d("forntag", "age is $age")
+            Log.d("forntag", "married is $married")
+        }
     }
+
 
 }
