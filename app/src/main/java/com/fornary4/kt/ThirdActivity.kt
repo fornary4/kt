@@ -1,7 +1,6 @@
 package com.fornary4.kt
 
-import android.media.MediaPlayer
-import android.net.Uri
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
