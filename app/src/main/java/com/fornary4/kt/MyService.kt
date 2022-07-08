@@ -52,6 +52,7 @@ class MyService : Service() {
             .setContentIntent(pi)
             .build()
         startForeground(1, notification)
+
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -65,7 +66,7 @@ class MyService : Service() {
     }
 }
 
-inline fun <reified T> startActivity(context: Context, block: Intent.() -> Unit) {
+inline fun <reified T> mStartActivity(context: Context, block: Intent.() -> Unit) {
     val intent = Intent(context, T::class.java)
     intent.block()
     context.startActivity(intent)
