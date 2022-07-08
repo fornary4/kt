@@ -5,20 +5,29 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/btn_change"
-        android:text="change text"
+        android:id="@+id/btn_start"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="start" />
 
-    <TextView
-        android:id="@+id/tv"
-        android:text="Hello world"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:textSize="20sp"
-        android:textColor="@color/black"
+    <Button
+        android:id="@+id/btn_stop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="stop" />
+
+    <Button
+        android:id="@+id/btn_bind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="bind" />
+
+    <Button
+        android:id="@+id/btn_unbind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="unbind" />
+
 
 
 </LinearLayout>
