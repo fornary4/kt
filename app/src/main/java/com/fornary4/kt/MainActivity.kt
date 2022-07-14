@@ -11,11 +11,13 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fornary4.kt.adapter.FruitAdapter
 import com.fornary4.kt.entity.Fruit
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,6 +51,9 @@ class MainActivity : AppCompatActivity() {
     private val recyclerView: RecyclerView by lazy {
         findViewById(R.id.recyclerView)
     }
+    private val swipeRefresh: SwipeRefreshLayout by lazy {
+        findViewById(R.id.swipeRefresh)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +83,11 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         val adapter = FruitAdapter(this, fruitList)
         recyclerView.adapter = adapter
+
+        swipeRefresh.setColorSchemeResources(R.color.purple_500)
+        swipeRefresh.setOnRefreshListener {
+            refreshFruits(adapter)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -100,6 +110,17 @@ class MainActivity : AppCompatActivity() {
         repeat(50) {
             val index = (0 until fruits.size).random()
             fruitList.add(fruits[index])
+        }
+    }
+
+    private fun refreshFruits(adapter: FruitAdapter) {
+        thread {
+            Thread.sleep(1000)
+            runOnUiThread {
+                initFruits()
+                adapter.notifyDataSetChanged()
+                swipeRefresh.isRefreshing = false
+            }
         }
     }
 
