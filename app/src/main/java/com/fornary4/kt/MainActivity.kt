@@ -2,127 +2,65 @@ package com.fornary4.kt
 
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.fornary4.kt.adapter.FruitAdapter
-import com.fornary4.kt.entity.Fruit
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
+import com.fornary4.kt.database.AppDatabase
+import com.fornary4.kt.databinding.ActivityMainBinding
+import com.fornary4.kt.entity.User
 import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val fruits = mutableListOf(
-        Fruit("Apple", R.drawable.apple), Fruit(
-            "Banana",
-            R.drawable.banana
-        ), Fruit("Orange", R.drawable.orange), Fruit(
-            "Watermelon",
-            R.drawable.watermelon
-        ), Fruit("Pear", R.drawable.pear), Fruit(
-            "Grape",
-            R.drawable.grape
-        ), Fruit("Pineapple", R.drawable.pineapple), Fruit(
-            "Strawberry",
-            R.drawable.strawberry
-        ), Fruit("Cherry", R.drawable.cherry), Fruit(
-            "Mango",
-            R.drawable.mango
-        )
-    )
-    private val fruitList = ArrayList<Fruit>()
-
-    private val drawerLayout: DrawerLayout by lazy {
-        findViewById(R.id.drawerLayout)
-    }
-    private val navigationView: NavigationView by lazy {
-        findViewById(R.id.navView)
-    }
-    private val recyclerView: RecyclerView by lazy {
-        findViewById(R.id.recyclerView)
-    }
-    private val swipeRefresh: SwipeRefreshLayout by lazy {
-        findViewById(R.id.swipeRefresh)
-    }
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_menu)
-        }
-        navigationView.setCheckedItem(R.id.navCall)
-        navigationView.setNavigationItemSelectedListener {
-            drawerLayout.closeDrawers()
-            true
-        }
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            Snackbar.make(it, "data deleted", Snackbar.LENGTH_SHORT)
-                .setAction("Undo") {
-                    Toast.makeText(this, "data restored", Toast.LENGTH_SHORT).show()
-                }
-                .show()
-        }
+        val userDao = AppDatabase.getDatabase(this).userDao()
+        val user1 = User("Tom", "Brady", 40)
+        val user2 = User("Tom", "Hanks", 63)
 
-        initFruits()
-        val layoutManager = GridLayoutManager(this, 2)
-        recyclerView.layoutManager = layoutManager
-        val adapter = FruitAdapter(this, fruitList)
-        recyclerView.adapter = adapter
 
-        swipeRefresh.setColorSchemeResources(R.color.purple_500)
-        swipeRefresh.setOnRefreshListener {
-            refreshFruits(adapter)
-        }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> drawerLayout.openDrawer(GravityCompat.START)
-            R.id.backup -> Toast.makeText(this, "You clicked Backup", Toast.LENGTH_SHORT).show()
-            R.id.delete -> Toast.makeText(this, "You clicked Delete", Toast.LENGTH_SHORT).show()
-            R.id.settings -> Toast.makeText(this, "You clicked Settings", Toast.LENGTH_SHORT).show()
-        }
-        return true
-    }
-
-    private fun initFruits() {
-        fruitList.clear()
-        repeat(50) {
-            val index = (0 until fruits.size).random()
-            fruitList.add(fruits[index])
-        }
-    }
-
-    private fun refreshFruits(adapter: FruitAdapter) {
-        thread {
-            Thread.sleep(1000)
-            runOnUiThread {
-                initFruits()
-                adapter.notifyDataSetChanged()
-                swipeRefresh.isRefreshing = false
+        binding.addDataBtn.setOnClickListener {
+            thread {
+                user1.id = userDao.insertUser(user1)
+                user2.id = userDao.insertUser(user2)
             }
         }
+
+        binding.updateDataBtn.setOnClickListener {
+            thread {
+                user1.age = 42
+                userDao.updateUser(user1)
+            }
+        }
+
+        binding.deleteDataBtn.setOnClickListener {
+            thread {
+                userDao.deleteUserByLastname("Hanks")
+            }
+        }
+
+        binding.queryDataBtn.setOnClickListener {
+            thread {
+                for (user in userDao.loadAllUsers()) {
+                    Log.d("forntag", user.toString())
+                }
+            }
+        }
+        
+
     }
+
+
+
+
+
 
 }
 

@@ -29,6 +29,7 @@
             android:exported="true"></activity>
         <activity
             android:name=".SecondActivity"
+            android:theme="@style/FruitActivityTheme"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
